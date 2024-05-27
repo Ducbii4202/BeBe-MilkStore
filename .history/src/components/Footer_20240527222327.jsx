@@ -23,6 +23,13 @@ export default function Footer() {
                 <Typography>(8h00 - 21h00)</Typography>
               </div>
               <Divider sx={{ borderColor: "white", width: "600px" }} />
+              {/* <div className="flex items-center space-x-20">
+                <Typography>Tư vấn khách hàng</Typography>
+                <Typography>
+                  <PhoneIcon /> 1800.xxxx
+                </Typography>
+                <Typography>(8h00 - 21h00)</Typography>
+              </div> */}
             </div>
 
             <div>
