@@ -1,6 +1,4 @@
-# React + Vite
-
-# BeBe Store
+# BeBe-MilkStore
 
 
 ## Main Technology:
