@@ -8,7 +8,7 @@ export default function Home() {
   const [productsTrend, setProductsTrend] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("http://localhost:5000/api/products")
       .then((response) => response.json())
       .then((data) => {
         const shuffled = data.sort(() => 0.5 - Math.random());

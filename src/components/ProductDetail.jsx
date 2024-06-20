@@ -74,23 +74,55 @@ export default function ProductDetail() {
     console.log("Comment:", comment);
   };
 
-  const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: quantity,
-      })
-    );
+  const handleAddToCart = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      dispatch(
+        addToCart({
+          productId: {
+            _id: product._id,
+            name: product.name,
+            regular_price: product.regular_price,
+            image: product.image,
+          },
+          quantity: quantity,
+        })
+      );
+      if (accessToken) {
+        const response = await fetch("http://localhost:5000/api/carts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            productId: product._id,
+            quantity: quantity,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(
+            `Failed to add product to cart. Status: ${response.status}`
+          );
+          throw new Error(
+            `Failed to add product to cart. Status: ${response.status}`
+          );
+        }
+        const cart = await response.json();
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error.message);
+    }
   };
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         console.log(`Fetching product with ID: ${id}`);
-        const response = await fetch(`http://localhost:3000/products/${id}`);
+        const response = await fetch(
+          `http://localhost:5000/api/products/${id}`
+        );
         if (!response.ok) {
           console.error(
             `Failed to fetch product. HTTP status: ${response.status}`
@@ -149,7 +181,7 @@ export default function ProductDetail() {
         <div className="flex">
           <div className="w-2/3">
             <img
-              src={product?.image}
+              src={`http://localhost:5000/${product?.image}`}
               alt="Product"
               className="w-full rounded-lg"
             />
@@ -157,7 +189,7 @@ export default function ProductDetail() {
               {[...Array(5)].map((_, index) => (
                 <img
                   key={index}
-                  src={product?.image}
+                  src={`http://localhost:5000/${product?.image}`}
                   alt="Thumbnail"
                   className="w-1/5 rounded-lg"
                 />
@@ -173,7 +205,7 @@ export default function ProductDetail() {
               <div className="flex-1">
                 <p className="text-gray-500">Giá bán tại: TP. HCM</p>
                 <p className="text-red-500 text-2xl font-bold">
-                  {formatPrice(product?.price)}
+                  {formatPrice(product?.regular_price)}
                 </p>
               </div>
             </div>

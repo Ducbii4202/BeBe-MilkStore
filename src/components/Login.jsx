@@ -1,6 +1,57 @@
+import React, { useState } from "react";
 import { Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
+
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("user", JSON.stringify({ name: data.user }));
+        localStorage.setItem("role", JSON.stringify({ name: data.role }));
+        var role = data.role;
+        switch (role) {
+          case "Customer":
+            message.success("Login successful");
+            navigate("/");
+            window.location.reload();
+            break;
+          case "Staff":
+            message.success("Login successful");
+            navigate("/staff/dashboard");
+            break;
+          case "Admin":
+            message.success("Login successful");
+            navigate("/admin/dashboard");
+            break;
+        }
+      } else {
+        const errorData = await response.json();
+        alert("Login failed: " + errorData.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Wrong email or password");
+    }
+  };
+
   return (
     <div className="px-20 my-10 bg-white">
       <div className="flex justify-center items-center">
@@ -26,14 +77,18 @@ export default function Login() {
           <div className="mx-12 my-8 w-5/6">
             <Input
               className="mb-4"
-              placeholder="Email | SDT"
+              placeholder="Email"
               type="email"
               size="large"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <Input.Password
               className="mb-4"
               placeholder="Mật khẩu*"
               size="large"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex justify-between items-center mb-4">
               <Button type="link" className="p-0 text-black font-bold">
@@ -47,6 +102,7 @@ export default function Login() {
               type="primary"
               className="w-full bg-blue-500 text-white font-bold py-2 rounded"
               size="large"
+              onClick={handleLogin}
             >
               ĐĂNG NHẬP
             </Button>
@@ -57,7 +113,7 @@ export default function Login() {
             </div>
             <Button
               type="primary"
-              className="w-full bg-green-500  text-white font-bold py-2 rounded mb-10"
+              className="w-full bg-green-500 text-white font-bold py-2 rounded mb-10"
               size="large"
             >
               OTP/SMS

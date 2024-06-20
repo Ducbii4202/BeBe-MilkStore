@@ -112,7 +112,7 @@ export default function ListProduct() {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("http://localhost:5000/api/products")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -131,7 +131,7 @@ export default function ListProduct() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("http://localhost:5000/api/products")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -427,12 +427,12 @@ export default function ListProduct() {
               <div className="grid grid-cols-4 gap-4">
                 {currentProducts.map((product) => (
                   <Link
-                    to={`/product-detail/${product.id}`}
+                    to={`/product-detail/${product._id}`}
                     key={product.id}
                     className="bg-gray-100 p-4 rounded-lg shadow-md text-center"
                   >
                     <img
-                      src={product.image}
+                      src={`http://localhost:5000/${product.image}`}
                       alt={product.name}
                       className="mx-auto"
                     />

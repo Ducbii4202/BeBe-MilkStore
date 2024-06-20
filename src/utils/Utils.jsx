@@ -5,12 +5,16 @@ export const renderProducts = (products) => (
   <div className="flex flex-wrap justify-around">
     {products.map((product) => (
       <Link
-        to={`/product-detail/${product.id}`}
+        to={`/product-detail/${product._id}`}
         key={product.id}
         className="rounded-lg shadow-md w-1/5 text-center m-4"
         // onClick={() => onClick(product.id)}
       >
-        <img src={product.image} alt={product.name} className="mx-auto" />
+        <img
+          src={`http://localhost:5000/${product.image}`}
+          alt={product.name}
+          className="mx-auto"
+        />
         <p className="mt-2 mx-10">{product.name}</p>
         <div className="flex justify-center items-center space-x-2 mt-2">
           <Rate disabled defaultValue={product.rating} />

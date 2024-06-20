@@ -25,6 +25,10 @@ import SideBarv2 from "./adminpages/SideBarv2";
 import ManagementStaff from "./adminpages/ManagementStaff";
 import StaffDetail from "./adminpages/StaffDetail";
 import ManagementVoucher from "./staffpages/ManagementVoucher";
+import StaffProfile from "./staffpages/StaffProfile";
+import OrderDetails from "./components/OrderDetailForUser";
+import OrderHistory from "./components/OrderHistory";
+import Headerv3 from "./adminpages/Headerv3";
 function App() {
   return (
     <>
@@ -47,6 +51,26 @@ function App() {
               <>
                 <Header />
                 <ListProduct />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/order-history"
+            element={
+              <>
+                <Header />
+                <OrderHistory />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/order-detail/:id"
+            element={
+              <>
+                <Header />
+                <OrderDetails />
                 <Footer />
               </>
             }
@@ -116,6 +140,21 @@ function App() {
                     <Headerv2 />
 
                     <DashBoard />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/profile"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <StaffProfile />
                   </div>
                 </div>
               </>
@@ -263,9 +302,24 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-                    <Headerv2 />
+                    <Headerv3 />
 
                     <Dashboard />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/admin/profile"
+            element={
+              <>
+                <div className="flex">
+                  <SideBarv2 />
+                  <div className="flex-1">
+                    <Headerv3 />
+
+                    <StaffProfile />
                   </div>
                 </div>
               </>
@@ -278,7 +332,7 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-                    <Headerv2 />
+                    <Headerv3 />
                     <ManagementStaff />
                   </div>
                 </div>
@@ -292,7 +346,7 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-                    <Headerv2 />
+                    <Headerv3 />
                     <StaffDetail />
                   </div>
                 </div>
